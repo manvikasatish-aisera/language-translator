@@ -6,7 +6,7 @@ import time
 from datetime import datetime
 
 def read_csv_phrases(file, unformatted_language, src_lang):
-    with open(file) as file_obj:
+    with open(file, 'r', encoding='utf-8') as file_obj:
         for line in file_obj:
             phrase = line.strip()
             if phrase:
