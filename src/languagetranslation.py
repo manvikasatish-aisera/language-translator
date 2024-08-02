@@ -6,25 +6,22 @@ import time
 from datetime import datetime
 
 def read_csv_phrases(file, unformatted_language, dest_lang):
-    translated_phrases = []
     with open(file, 'r', encoding='utf-8') as file_obj:
         for line in file_obj:
             phrase = line.strip()
             if phrase:
                 translated = translate(phrase, dest_lang)
-                translated_phrases.append(translated)
-    
-    write_into_csv(unformatted_language, translated_phrases)
+                print(translated)
+                write_into_csv(unformatted_language, translated)
 
-def write_into_csv(language, translated_phrases):
+def write_into_csv(language, phrase):
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
 
     csvfile = f'../results/{date}_{language}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
-        for phrase in translated_phrases:
-            writetocsv.writerow([phrase])
+        writetocsv.writerow([phrase])
 
 def translate(phrase, dest_lang='auto', retries=3):
     translator = Translator(service_urls=['translate.google.com'])
