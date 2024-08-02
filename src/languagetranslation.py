@@ -12,9 +12,8 @@ def read_csv_phrases(file, unformatted_language, dest_lang):
             if phrase:
                 translated = translate(phrase, dest_lang)
                 translated_phrases.append(translated)
-                print(translated_phrases)
                 
-    # write_into_csv(unformatted_language, translated_phrases)
+    write_into_csv(unformatted_language, translated_phrases)
 
 def write_into_csv(language, phrase):
     now = datetime.now()
@@ -41,7 +40,6 @@ def translate(phrase, dest_lang='auto', retries=3):
         for attempt in range(retries):
             try:
                 trans_phrase = translator.translate(phrase, dest=dest_lang, src='en')
-                print("GOT HERE", trans_phrase)
                 break
             except Exception as e:
                 print(f"Attempt {attempt + 1} failed: {e}")
