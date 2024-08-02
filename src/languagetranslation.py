@@ -1,62 +1,116 @@
 import csv
-import requests
-from dotenv import load_dotenv
 import os
+from googletrans import Translator
+import time
+from datetime import datetime
 
-def read_csv_phrases(filepath):
-    with open(filepath) as file_obj: 
-        reader_obj = csv.reader(file_obj)  
-        for row in reader_obj:
-            for phrase in row:
-                # translated = translate(phrase)
-                # write_into_csv(translated)
-                print(phrase)
+def read_csv_phrases(file, unformatted_language, src_lang):
+    with open(file, 'r', encoding='utf-8') as file_obj:
+        for line in file_obj:
+            phrase = line.strip()
+            if phrase:
+                translated = translate(phrase, src_lang)
+                print(translated)
+                write_into_csv(unformatted_language, translated)
 
-def write_into_csv(phrase, csvfile):
-    csvfile = './results/results.csv'
-    with open(csvfile, 'a', newline='') as file:
+def write_into_csv(language, phrase):
+    now = datetime.now()
+    date = now.strftime("%Y_%m_%d_%H_%M")
+
+    csvfile = f'./results/{date}_{language}_results.csv'
+    with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
-        writetocsv.writerow(phrase)
+        writetocsv.writerow([phrase])
 
-def translate(phrase, language):
-    load_dotenv()
+def translate(phrase, src_lang='auto', retries=3):
+    translator = Translator(service_urls=['translate.google.com'])
 
-    api_url = "https://agw.golinguist.com/linguistnow/resources/v1/translate"
-    api_key = os.getenv('GO_LINGUIST_API_KEY')
+    try:
+        if src_lang == 'auto':
+            detected_language = translator.detect(phrase)
+            src_lang = detected_language.lang
+            print(f"Detected language: {src_lang} with confidence {detected_language.confidence}")
+        else:
+            print(f"Using provided source language: {src_lang}")
 
-    headers = {
-        "x-api-key": api_key,
-        "Content-Type": "application/json"
+        for attempt in range(retries):
+            try:
+                trans_phrase = translator.translate(phrase, dest='en', src=src_lang)
+                break
+            except Exception as e:
+                print(f"Attempt {attempt + 1} failed: {e}")
+                if attempt < retries - 1:
+                    time.sleep(2)
+                else:
+                    print("All attempts failed.")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+    return trans_phrase.text
+
+def get_language_code(language):
+    language_codes = {
+        'amharic': 'am',
+        'arabic': 'ar',
+        'basque': 'eu',
+        'bengali': 'bn',
+        'english (uk)': 'en-GB',
+        'portuguese (brazil)': 'pt-BR',
+        'bulgarian': 'bg',
+        'catalan': 'ca',
+        'cherokee': 'chr',
+        'croatian': 'hr',
+        'czech': 'cs',
+        'danish': 'da',
+        'dutch': 'nl',
+        'english (us)': 'en',
+        'estonian': 'et',
+        'filipino': 'fil',
+        'finnish': 'fi',
+        'french': 'fr',
+        'german': 'de',
+        'greek': 'el',
+        'gujarati': 'gu',
+        'hebrew': 'iw',
+        'hindi': 'hi',
+        'hungarian': 'hu',
+        'icelandic': 'is',
+        'indonesian': 'id',
+        'italian': 'it',
+        'japanese': 'ja',
+        'kannada': 'kn',
+        'korean': 'ko',
+        'latvian': 'lv',
+        'lithuanian': 'lt',
+        'malay': 'ms',
+        'malayalam': 'ml',
+        'marathi': 'mr',
+        'norwegian': 'no',
+        'polish': 'pl',
+        'portuguese (portugal)': 'pt-PT',
+        'romanian': 'ro',
+        'russian': 'ru',
+        'serbian': 'sr',
+        'chinese (prc)': 'zh-CN',
+        'slovak': 'sk',
+        'slovenian': 'sl',
+        'spanish': 'es',
+        'swahili': 'sw',
+        'swedish': 'sv',
+        'tamil': 'ta',
+        'telugu': 'te',
+        'thai': 'th',
+        'chinese (taiwan)': 'zh-TW',
+        'turkish': 'tr',
+        'urdu': 'ur',
+        'ukrainian': 'uk',
+        'vietnamese': 'vi',
+        'welsh': 'cy'
     }
+    return language_codes[language]
 
-    payload = {
-        "sourceContent": phrase,
-        "sourceLocale": "en",
-        "targetLocale": "fr", # language_code(language)
-        "contentTypeName": "api",
-        "translationType": "machine",
-        "textType": "html",
-        "evaluateQuality": True
-    }
-
-    # Make the POST request
-    response = requests.post(api_url, headers=headers, json=payload)
-
-    # Check the response status
-    if response.status_code == 200:
-        # Parse the JSON response
-        translated_data = response.json()
-        print("Translated Text:", translated_data["translatedText"])
-        print("Translation ID:", translated_data["translationId"])
-        print("Word Count:", translated_data["wordCount"])
-        print("Below Quality Target:", translated_data["belowQualityTarget"])
-        return translated_data["translatedText"]
-    else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-
-def language_code(language):
-    return "fr" # temp, language codes are 
-    # https://support.languageio.com/hc/en-us/articles/18984338183949-Language-codes-in-API-requests-and-responses#AC 
-
-translate("hello", "fr")
+if __name__ == "__main__":
+    language = os.getenv('LANGUAGE')
+    language_code = get_language_code(language.lower())
+    read_csv_phrases('./phrases/complex_short_phrases.csv', language, src_lang=language_code)
