@@ -118,7 +118,7 @@ if __name__ == "__main__":
     if not file_path:
         raise ValueError("No file path provided in the environment variable 'FILE_PATH'")
 
-    phrases_dir = 'phrases'
+    phrases_dir = 'logs'
     if not os.path.exists(phrases_dir):
         os.makedirs(phrases_dir)
 
