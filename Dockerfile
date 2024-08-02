@@ -5,7 +5,6 @@ FROM python:3.11.3
 # Set the working directory
 WORKDIR /usr/src/app
 
-# EXPOSE 8088
 # Copy the rest of the code
 COPY . .
 
@@ -20,15 +19,3 @@ RUN pwd
 RUN ls /
 WORKDIR src
 CMD ["python3", "languagetranslation.py"]
-
-# CMD /usr/src/app/test.sh ; sleep infinity
-
-# CMD ["python3", "/usr/src/app/src/phrasegen.py"]
-# CMD /usr/src/app/test.sh ; sleep infinity
-# Define the command to run the app
-# CMD ["node", "index.js"]
-
-# docker build -t testimage .
-# docker images
-# docker run -p 5000:5000 -d testimage:latest
-# docker exec -it 161b /bin/bash
