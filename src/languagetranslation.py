@@ -113,7 +113,7 @@ def get_language_code(language):
 
 if __name__ == "__main__":
     language = os.getenv('LANGUAGE')
-    file_path = os.path.join('/mylogs', os.getenv('FILE_PATH'))
+    file_path = os.path.join('/logs', os.getenv('FILE_PATH'))
 
     print(f"Language: {language}")
     print(f"File Path: {file_path}")
