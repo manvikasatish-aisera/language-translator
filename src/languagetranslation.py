@@ -25,7 +25,6 @@ def write_into_csv(language, phrase):
         writetocsv.writerow([phrase])
 
 def translate(phrase, dest_lang='auto', retries=3):
-    print("TRANSLATE FUNCTION PHRASE: ", phrase, " DEST LANG: ", dest_lang)
     translator = Translator(service_urls=['translate.google.com'])
     trans_phrase = None 
 
@@ -56,7 +55,7 @@ def translate(phrase, dest_lang='auto', retries=3):
     if trans_phrase:
         return trans_phrase.text
     else:
-        return "Translation failed" 
+        return f"Translation failed. English Phrase: {phrase}" 
 
 def get_language_code(language):
     language_codes = {
