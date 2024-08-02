@@ -10,7 +10,6 @@ def read_csv_phrases(file, unformatted_language, dest_lang):
         for line in file_obj:
             phrase = line.strip()
             if phrase:
-                print(phrase)
                 translated = translate(phrase, dest_lang)
                 translated_phrases.append(translated)
                 print(translated_phrases)
@@ -27,6 +26,7 @@ def write_into_csv(language, phrase):
         writetocsv.writerow([phrase])
 
 def translate(phrase, dest_lang='auto', retries=3):
+    print("TRANSLATE FUNCTION PHRASE: ", phrase)
     translator = Translator(service_urls=['translate.google.com'])
     trans_phrase = None 
 
