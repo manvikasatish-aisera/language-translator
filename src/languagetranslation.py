@@ -1,5 +1,6 @@
 import csv
 import os
+import shutil
 from googletrans import Translator
 import time
 from datetime import datetime
@@ -113,5 +114,16 @@ def get_language_code(language):
 if __name__ == "__main__":
     language = os.getenv('LANGUAGE')
     file_path = os.getenv('FILE_PATH')
+
+    if not file_path:
+        raise ValueError("No file path provided in the environment variable 'FILE_PATH'")
+
+    phrases_dir = 'phrases'
+    if not os.path.exists(phrases_dir):
+        os.makedirs(phrases_dir)
+
+    destination_path = os.path.join(phrases_dir, os.path.basename(file_path))
+    shutil.copy(file_path, destination_path)
+
     language_code = get_language_code(language.lower())
     read_csv_phrases(file_path, language, src_lang=language_code)
