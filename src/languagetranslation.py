@@ -112,5 +112,6 @@ def get_language_code(language):
 
 if __name__ == "__main__":
     language = os.getenv('LANGUAGE')
+    file_path = os.getenv('FILE_PATH')
     language_code = get_language_code(language.lower())
-    read_csv_phrases('./phrases/complex_short_phrases.csv', language, src_lang=language_code)
+    read_csv_phrases(file_path, language, src_lang=language_code)

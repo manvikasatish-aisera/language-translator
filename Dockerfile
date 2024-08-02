@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # set environment variables
 ENV LANGUAGE language
+ENV FILE_PATH file_path
 
 RUN mkdir -p /logs
 RUN pwd
