@@ -18,7 +18,7 @@ def write_into_csv(language, phrase):
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
 
-    csvfile = f'./results/{date}_{language}_results.csv'
+    csvfile = f'../results/{date}_{language}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
         writetocsv.writerow([phrase])
@@ -114,9 +114,6 @@ def get_language_code(language):
 if __name__ == "__main__":
     language = os.getenv('LANGUAGE')
     file_path = '/root/' + os.getenv('FILE_PATH')
-
-    print(f"Language: {language}")
-    print(f"File Path: {file_path}")
 
     if not file_path:
         raise ValueError("No file path provided in the environment variable 'FILE_PATH'")
