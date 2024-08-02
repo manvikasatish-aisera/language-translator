@@ -9,8 +9,6 @@ WORKDIR /usr/src/app
 # Copy the rest of the code
 COPY . .
 
-RUN ls
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 # set environment variables
