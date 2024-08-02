@@ -10,7 +10,7 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN ls -la /app
+RUN ls -la
 
 # set environment variables
 ENV LANGUAGE language
