@@ -113,7 +113,7 @@ def get_language_code(language):
 
 if __name__ == "__main__":
     language = os.getenv('LANGUAGE')
-    file_path = "/logs/" + os.getenv('FILE_PATH')
+    file_path = "../logs/" + os.getenv('FILE_PATH')
 
     if not file_path:
         raise ValueError("No file path provided in the environment variable 'FILE_PATH'")
