@@ -25,6 +25,7 @@ def write_into_csv(language, phrase):
 
 def translate(phrase, dest_lang='auto', retries=3):
     translator = Translator(service_urls=['translate.google.com'])
+    trans_phrase = None  # Initialize trans_phrase with a default value
 
     try:
         if dest_lang == 'auto':
@@ -44,11 +45,16 @@ def translate(phrase, dest_lang='auto', retries=3):
                     time.sleep(2)
                 else:
                     print("All attempts failed.")
+                    trans_phrase = None  # Ensure trans_phrase is explicitly set to None on failure
 
     except Exception as e:
         print(f"Error: {e}")
+        trans_phrase = None  # Ensure trans_phrase is explicitly set to None on failure
 
-    return trans_phrase.text
+    if trans_phrase:
+        return trans_phrase.text
+    else:
+        return "Translation failed"  # Return a default message or handle the failure appropriately
 
 def get_language_code(language):
     language_codes = {
