@@ -5,12 +5,12 @@ from googletrans import Translator
 import time
 from datetime import datetime
 
-def read_csv_phrases(file, unformatted_language, src_lang):
+def read_csv_phrases(file, unformatted_language, dest_lang):
     with open(file, 'r', encoding='utf-8') as file_obj:
         for line in file_obj:
             phrase = line.strip()
             if phrase:
-                translated = translate(phrase, src_lang)
+                translated = translate(phrase, dest_lang)
                 print(translated)
                 write_into_csv(unformatted_language, translated)
 
@@ -23,20 +23,20 @@ def write_into_csv(language, phrase):
         writetocsv = csv.writer(file)
         writetocsv.writerow([phrase])
 
-def translate(phrase, src_lang='auto', retries=3):
+def translate(phrase, dest_lang='auto', retries=3):
     translator = Translator(service_urls=['translate.google.com'])
 
     try:
-        if src_lang == 'auto':
+        if dest_lang == 'auto':
             detected_language = translator.detect(phrase)
-            src_lang = detected_language.lang
-            print(f"Detected language: {src_lang} with confidence {detected_language.confidence}")
+            dest_lang = detected_language.lang
+            print(f"Detected language: {dest_lang} with confidence {detected_language.confidence}")
         else:
-            print(f"Using provided source language: {src_lang}")
+            print(f"Using provided source language: {dest_lang}")
 
         for attempt in range(retries):
             try:
-                trans_phrase = translator.translate(phrase, dest='en', src=src_lang)
+                trans_phrase = translator.translate(phrase, dest=dest_lang, src='en')
                 break
             except Exception as e:
                 print(f"Attempt {attempt + 1} failed: {e}")
@@ -119,4 +119,4 @@ if __name__ == "__main__":
         raise ValueError("No file path provided in the environment variable 'FILE_PATH'")
 
     language_code = get_language_code(language.lower())
-    read_csv_phrases(file_path, language, src_lang=language_code)
+    read_csv_phrases(file_path, language, dest_lang=language_code)
