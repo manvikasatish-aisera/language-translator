@@ -13,9 +13,11 @@ def read_csv_phrases(file, unformatted_language, dest_lang):
                 translated = translate(phrase, dest_lang)
                 translated_phrases.append(translated)
                 
-    write_into_csv(unformatted_language, translated_phrases)
+    write_into_csv(file, unformatted_language, translated_phrases)
 
-def write_into_csv(language, phrase):
+def write_into_csv(file, language, phrase):
+    print("filename: ", file)
+    
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
 
