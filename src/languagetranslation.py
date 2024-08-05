@@ -16,7 +16,9 @@ def read_csv_phrases(file, unformatted_language, dest_lang):
     write_into_csv(file, unformatted_language, translated_phrases)
 
 def write_into_csv(file, language, phrase):
-    print("filename: ", file[6:])
+    fname = file[6:]
+    filename = fname[:-3]
+    print("filename: ", filename)
 
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
