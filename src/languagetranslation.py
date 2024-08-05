@@ -23,7 +23,7 @@ def write_into_csv(file, language, phrase):
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
 
-    csvfile = f'/logs/{language}_{filename}_results.csv'
+    csvfile = f'/logs/{language}_{filename}_{date}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
         writetocsv.writerow([phrase])
