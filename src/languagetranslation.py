@@ -3,6 +3,8 @@ import os
 from googletrans import Translator
 import time
 from datetime import datetime
+import pandas as pd
+
 
 def read_csv_phrases(file, unformatted_language, dest_lang):
     translated_phrases = []
@@ -23,10 +25,23 @@ def write_into_csv(file, language, phrase):
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
 
-    csvfile = f'/logs/{language}_{filename}_{date}_results.csv'
+    csvfile = f'../results/{language}_{filename}_{date}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
         writetocsv.writerow([phrase])
+    
+    write_to_excel(csvfile)
+
+def write_to_excel(csvfile):
+    df = pd.read_csv(csvfile)
+    
+    logs_dir = '/logs/'
+    os.makedirs(logs_dir, exist_ok=True)
+
+    excel_file = os.path.join(logs_dir, os.path.basename(csvfile).replace('.csv', '.xlsx'))
+    df.to_excel(excel_file, index=False, engine='openpyxl')
+
+    print(f'CSV file {csvfile} has been written to Excel file {excel_file}')
 
 def translate(phrase, dest_lang='auto', retries=3):
     translator = Translator(service_urls=['translate.google.com'])
