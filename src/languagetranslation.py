@@ -17,13 +17,13 @@ def read_csv_phrases(file, unformatted_language, dest_lang):
 
 def write_into_csv(file, language, phrase):
     fname = file[6:]
-    filename = fname[:-3]
+    filename = fname[:-4]
     print("filename: ", filename)
 
     now = datetime.now()
     date = now.strftime("%Y_%m_%d_%H_%M")
 
-    csvfile = f'/logs/{date}_{language}_results.csv'
+    csvfile = f'/logs/{language}_{filename}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
         writetocsv.writerow([phrase])
