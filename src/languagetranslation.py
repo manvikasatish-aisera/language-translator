@@ -27,7 +27,7 @@ def write_into_csv(file, language, translated_phrases):
     csvfile = f'../results/{language}_{filename}_{date}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
         writetocsv = csv.writer(file)
-        writetocsv.writerow("Translated Phrases")
+        writetocsv.writerow(["Translated Phrases"])
         for phrase in translated_phrases:
             writetocsv.writerow([phrase])
     
