@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 import pandas as pd
 
-
 def read_csv_phrases(file, unformatted_language, dest_lang):
     translated_phrases = []
     with open(file, 'r', encoding='utf-8') as file_obj:
@@ -17,7 +16,7 @@ def read_csv_phrases(file, unformatted_language, dest_lang):
                 
     write_into_csv(file, unformatted_language, translated_phrases)
 
-def write_into_csv(file, language, phrase):
+def write_into_csv(file, language, translated_phrases):
     fname = file[6:]
     filename = fname[:-4]
     print("filename: ", filename)
@@ -27,11 +26,13 @@ def write_into_csv(file, language, phrase):
 
     csvfile = f'../results/{language}_{filename}_{date}_results.csv'
     with open(csvfile, 'a', newline='', encoding='utf-8') as file:
-        writetocsv = csv.writer(file)
-        writetocsv.writerow([phrase])
+        for phrase in translated_phrases:
+            writetocsv = csv.writer(file)
+            writetocsv.writerow([phrase])
     
     write_to_excel(csvfile)
 
+# fix formatting
 def write_to_excel(csvfile):
     df = pd.read_csv(csvfile)
     
