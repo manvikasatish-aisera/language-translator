@@ -1,1 +1,2 @@
 # language-translator
+The Language Phrase Converter Tool on Jenkins is designed for translating a list of phrases from English to a specified target language using the Google Translate API. Developed in Python, this tool efficiently converts input phrases and generates an output Excel file with the translated content.

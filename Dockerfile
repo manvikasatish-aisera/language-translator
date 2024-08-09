@@ -15,6 +15,7 @@ RUN ls -la
 # set environment variables
 ENV LANGUAGE language
 ENV FILE_PATH file_path
+ENV MOST_RECENT filetoemail
 
 RUN mkdir -p /logs
 RUN pwd

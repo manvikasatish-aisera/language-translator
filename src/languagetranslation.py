@@ -33,7 +33,6 @@ def write_into_csv(file, language, translated_phrases):
     
     write_to_excel(csvfile)
 
-# fix formatting
 def write_to_excel(csvfile):
     df = pd.read_csv(csvfile)
     
